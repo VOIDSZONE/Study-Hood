@@ -1,6 +1,7 @@
 const OtpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const User = require("../models/User");
 const OTP = require("../models/Otp");
@@ -126,6 +127,7 @@ exports.signup = async (req, res) => {
       firstName,
       lastName,
       email,
+      contactNumber,
       password: hashedPassword,
       accountType,
       additionalDetails: profileDetails._id,
@@ -171,7 +173,7 @@ exports.login = async (req, res) => {
       const payload = {
         email: user.email,
         id: user._id,
-        role: user.accountType,
+        accountType: user.accountType,
       };
 
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
