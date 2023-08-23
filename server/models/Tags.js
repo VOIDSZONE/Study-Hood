@@ -10,7 +10,7 @@ const tagsSchema = new mongoose.Schema({
     type: String,
   },
 
-  course: {
+  courses: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Course",
     required: true,
