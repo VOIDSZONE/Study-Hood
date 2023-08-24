@@ -1,8 +1,8 @@
-const Tags = require("../models/Tags");
+const Category = require("../models/Category");
 
-//Create Tag Handler
+//Create category Handler
 
-exports.createTag = async (req, res) => {
+exports.createCategory = async (req, res) => {
   try {
     const { name, description } = req.body;
 
@@ -13,41 +13,44 @@ exports.createTag = async (req, res) => {
       });
     }
 
-    const tagDetails = await Tags.create({
+    const categoryDetails = await Category.create({
       name: name,
       description: description,
     });
 
-    console.log(tagDetails);
+    console.log(categoryDetails);
 
     return res.status(200).json({
       success: true,
-      messsage: "Tag created successfully",
+      messsage: "category created successfully",
     });
   } catch (err) {
     return res.status(500).json({
       success: false,
-      messsage: "Error while creating the tags",
+      messsage: "Error while creating the Category",
       error: err.messsage,
     });
   }
 };
 
-//Get All Tags
+//Get All Category
 
-exports.getAllTags = async (req, res) => {
+exports.getAllCategory = async (req, res) => {
   try {
-    const allTags = await Tags.find({}, { name: true, description: true });
+    const allCategory = await Category.find(
+      {},
+      { name: true, description: true }
+    );
 
     return res.status(200).json({
       success: true,
-      messsage: "Successfully fetched the tags",
-      allTags,
+      messsage: "Successfully fetched the Category",
+      allCategory,
     });
   } catch (err) {
     return res.status(500).json({
       success: false,
-      messsage: "Error while getting the tags",
+      messsage: "Error while getting the Category",
       error: err.messsage,
     });
   }
