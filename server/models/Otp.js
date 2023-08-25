@@ -23,7 +23,7 @@ const sendVerificationMail = async (email, otp) => {
   try {
     const mailResponse = await mail(
       email,
-      "Verification code from StudyHood",
+      "Verification code from Study Notion",
       otp
     );
     console.log("Mail Send Successfully", mailResponse);
@@ -34,7 +34,11 @@ const sendVerificationMail = async (email, otp) => {
 };
 
 otpSchema.pre("save", async function (next) {
-  await sendVerificationMail(this.email, this.otp);
+  console.log("New document saved to database");
+
+  if (this.isNew) {
+    await sendVerificationEmail(this.email, this.otp);
+  }
   next();
 });
 
