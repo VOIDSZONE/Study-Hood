@@ -3,7 +3,7 @@ const Course = require("../models/Course");
 
 exports.createSection = async (req, res) => {
   try {
-    // Extract the required properties from the request body
+    // data fetch
     const { sectionName, courseId } = req.body;
 
     // Validation the input
@@ -25,14 +25,7 @@ exports.createSection = async (req, res) => {
         },
       },
       { new: true }
-    )
-      .populate({
-        path: "courseContent",
-        populate: {
-          path: "subSection",
-        },
-      })
-      .exec();
+    );
 
     // Return the updated course object in the response
     res.status(200).json({
@@ -41,36 +34,44 @@ exports.createSection = async (req, res) => {
       updatedCourse,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "Internal server error",
+      message: "Unable to create Section, please try again",
       error: error.message,
     });
   }
 };
-// UPDATE a section
-exports.updateSection = async (req, res) => {
+//  Update Section
+exports.updatedSection = async (req, res) => {
   try {
     const { sectionName, sectionId } = req.body;
+
+    if (!sectionName || !sectionId) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing properties",
+      });
+    }
+
     const section = await Section.findByIdAndUpdate(
       sectionId,
       { sectionName },
       { new: true }
     );
-    res.status(200).json({
+
+    return res.status(200).json({
       success: true,
-      message: section,
+      message: "Section updated successfully ",
     });
   } catch (error) {
-    console.error("Error updating section:", error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "Internal server error",
+      message: "Unable to update Section, please try again",
+      error: error.message,
     });
   }
 };
-
-// Delete a Section
+// Delete Section
 exports.deleteSection = async (req, res) => {
   try {
     const { sectionId } = req.params;
@@ -78,12 +79,12 @@ exports.deleteSection = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Section deleted  ",
+      message: "Section deleted successfully ",
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "Internal server error",
+      message: "Unable to delete Section, please try again",
     });
   }
 };

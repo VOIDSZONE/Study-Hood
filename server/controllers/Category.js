@@ -1,60 +1,58 @@
-const Category = require("../models/Category");
-
-//Create category Handler
+const Tags = require("../models/tags");
 
 exports.createCategory = async (req, res) => {
   try {
+    // fetch data
     const { name, description } = req.body;
 
+    //validation
     if (!name || !description) {
       return res.status(400).json({
         success: false,
-        messsage: "All fields are required",
+        message: "All fields are required",
       });
     }
 
-    const categoryDetails = await Category.create({
+    // create entry in DB
+    const CategorysDetails = await Tag.create({
       name: name,
       description: description,
     });
+    console.log(CategorysDetails);
 
-    console.log(categoryDetails);
-
+    // return response
     return res.status(200).json({
       success: true,
-      messsage: "category created successfully",
+      message: "Tag created Successfully",
     });
-  } catch (err) {
+  } catch (error) {
     return res.status(500).json({
       success: false,
-      messsage: "Error while creating the Category",
-      error: err.messsage,
+      message: error.message,
     });
   }
 };
 
-//Get All Category
+// getAlltags handler function
 
-exports.getAllCategory = async (req, res) => {
+exports.showAllCategories = async (req, res) => {
   try {
-    const allCategory = await Category.find(
-      {},
-      { name: true, description: true }
-    );
-
-    return res.status(200).json({
+    const allTags = await Tag.find({}, { name: true, description: true });
+    res.status(200).json({
       success: true,
-      messsage: "Successfully fetched the Category",
-      allCategory,
+      message: "All tags returned successfully",
+
+      allTags,
     });
-  } catch (err) {
+  } catch (error) {
     return res.status(500).json({
       success: false,
-      messsage: "Error while getting the Category",
-      error: err.messsage,
+      message: error.message,
     });
   }
 };
+
+//categoryPageDetails
 
 exports.categoryPageDetails = async (req, res) => {
   try {
@@ -77,9 +75,6 @@ exports.categoryPageDetails = async (req, res) => {
     })
       .populate("courses")
       .exec();
-
-    //get top 10 selling courses
-    //HW - write it on your own
 
     //return response
     return res.status(200).json({

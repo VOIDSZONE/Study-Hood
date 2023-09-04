@@ -1,23 +1,21 @@
 const mongoose = require("mongoose");
 
-const profileSchema = new mongoose.Schema({
+const profleSchema = new mongoose.Schema({
   gender: {
     type: String,
   },
-
   dateOfBirth: {
     type: String,
+    trim: true,
   },
-
   about: {
     type: String,
     trim: true,
   },
-
   contactNumber: {
     type: Number,
     trim: true,
   },
 });
 
-module.exports = mongoose.model("Profile", profileSchema);
+module.exports = mongoose.model("Profile", profleSchema);
